@@ -1,0 +1,4 @@
+# roles/example/tasks/debian.yml
+- apt:
+    name: "apache2"
+    state: present

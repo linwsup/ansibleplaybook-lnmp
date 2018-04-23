@@ -1,0 +1,9 @@
+---
+- name: Install Nginx,mysql,PHP-FPM
+  hosts: websrvs
+  remote_user: root
+  roles:
+    - common
+    - mysql
+    - php-fpm
+    - nginx

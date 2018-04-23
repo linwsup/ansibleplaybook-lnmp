@@ -1,0 +1,3 @@
+---
+- name: Copy the code 
+  copy: src=test.php dest=/usr/local/{{ nginx_version }}/html

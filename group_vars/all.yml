@@ -1,0 +1,10 @@
+# NGINX
+nginx_version: nginx-1.14.0
+nginx_server_name: www.example.com
+nginx_port: 8080
+
+#MYSQL
+
+#PHP-FPM
+php_version: php-5.6.35
+php_port: 9000

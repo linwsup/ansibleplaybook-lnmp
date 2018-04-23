@@ -1,0 +1,30 @@
+---
+#- name: Install Nginx
+#  yum: name=nginx state=present
+
+#- name: Copy default.conf to nginx.conf
+#  template: src=nginx.conf dest=/etc/nginx/nginx.conf
+#  notify: restart nginx
+- name:  Unpacks
+  unarchive: src={{ php_version }}.tar.gz dest=/usr/local/src
+
+- name: Compile installation
+  shell: cd /usr/local/src/{{ php_version }};./configure  --prefix=/usr/local/{{ php_version }} \
+        --with-config-file-path=/usr/local/{{ php_version }}/etc --with-bz2 --with-curl --with-openssl \
+        --enable-ftp --enable-sockets --disable-ipv6 --with-gd \
+        --with-jpeg-dir=/usr/local --with-png-dir=/usr/local \
+        --with-freetype-dir=/usr/local --enable-gd-native-ttf \
+        --with-iconv-dir=/usr/local --enable-mbstring --enable-calendar \
+        --with-gettext --with-libxml-dir=/usr/local --with-zlib \
+        --with-pdo-mysql=mysqlnd --with-mysqli=mysqlnd --with-mysql=mysqlnd \
+        --enable-dom --enable-xml --enable-fpm --with-libdir=lib64 --enable-bcmath;make && make install 
+
+- name: Copy configution
+  command: mv /usr/local/{{ php_version }}/etc/php-fpm.conf.default /usr/local/{{ php_version }}/etc/php-fpm.conf
+
+- name: Copy configution
+  template: src=php-fpm.service dest=/usr/lib/systemd/system/php-fpm.service
+  notify: restart php-fpm
+
+- name: Start PHP-FPM
+  shell: systemctl start php-fpm

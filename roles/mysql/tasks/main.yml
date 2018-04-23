@@ -1,0 +1,10 @@
+---
+- name: Install Mysql
+  yum: name=mariadb-server state=present
+
+- name: copy configution
+  template: src=my.cnf dest=/etc/my.cnf
+  notify:
+        - restart mysql
+- name: Start Mysql
+  shell: /usr/bin/systemctl start mariadb

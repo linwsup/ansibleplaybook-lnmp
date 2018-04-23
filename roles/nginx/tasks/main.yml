@@ -1,0 +1,31 @@
+---
+#- name: Install Nginx
+#  yum: name=nginx state=present
+
+- name: Install Depend Package
+  yum: name={{ item }} state=present
+  with_items:
+    - pcre
+    - pcre-devel
+    - openssl
+    - openssl-devel
+    - zlib
+    - zlib-devel 
+
+- name:  Unpacks
+  unarchive: src={{ nginx_version }}.tar.gz dest=/usr/local/src
+
+- name: Compile installation
+  shell: cd /usr/local/src/{{ nginx_version }};./configure --prefix=/usr/local/{{ nginx_version }} --with-http_ssl_module --with-http_flv_module --with-http_stub_status_module --with-http_gzip_static_module  --with-pcre;make && make install 
+
+- name: Copy default.conf to nginx.conf
+  template: src=nginx.conf dest=/usr/local/{{ nginx_version }}/conf/nginx.conf
+  notify: restart nginx
+
+- name: Copy configuration
+  template: src=nginx.service dest=/usr/lib/systemd/system/nginx.service
+
+- name: Start Nginx
+  shell: systemctl daemon-reload;systemctl restart nginx
+
+- include: copy_php_code.yml

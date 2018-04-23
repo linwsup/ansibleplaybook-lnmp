@@ -1,0 +1,28 @@
+- name:
+  yum: name={{ item }} state=present
+  with_items:
+    - gcc 
+    - gcc-c++
+    - libxml2
+    - libxml2-devel
+    - autoconf
+    - libjpeg
+    - libjpeg-devel
+    - libpng
+    - libpng-devel
+    - gd
+    - openssl
+    - openssl-devel
+    - openldap-devel
+    - bzip2
+    - bzip2-devel
+    - curl
+    - curl-devel
+    - freetype
+    - freetype-devel
+    - zlib
+    - zlib-devel
+    - glibc
+    - glibc-devel
+    - glib2
+    - glib2-devel
